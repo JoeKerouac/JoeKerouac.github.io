@@ -50,5 +50,20 @@ set autoread
 autocmd vimenter * NERDTree
 " 使用9跳转到行尾，默认0跳转到行首
 map 9 $
+" 设置在右下角显示输入的命令
+set showcmd
+
+" 输入的时候对(进行映射，输入(后会自动补全)并且将光标置于两个括号之间，下同或类似
+imap ( ()<Esc>i
+imap { {}<Esc>i
+imap [ []<Esc>i
+
+" 这里因为前后符号相同会导致递归，需要用inoremap防止递归
+inoremap " ""<Esc>i
+inoremap ' ''<Esc>i
+
+" Java常用，因为上边定义好了自动补全括号和引号，所以这里不需要输入后括号和引号
+imap psvm public static void main(String[<Esc>la args<Esc>la{<CR><CR><Esc>ki<Tab><Tab>
+imap sout System.out.println(<Esc>la;<Esc>hi
 " ----------------------------普通配置结束，大部分不依赖任何插件----------------------------
 ```
