@@ -101,12 +101,16 @@ final void checkForComodification() {
         throw new ConcurrentModificationException();
 }
 ```
-在`modCount != expectedModCount`这个条件成立的时候会抛出`ConcurrentModificationException`异常，那么这个条件是怎么成立的呢？首先
-我们查看`modCount`的来源，可以发现`modCount`的值等于当前List的`size`，当调用`List.remove`方法的时候`modCount`也会相应的减1，然后
-我们查看`expectedModCount`的来源，可以看到是在构造`Iterator`（这里使用的是ArrayList的内部实现）的时候，有一个变量赋值，将`modCount`
-的值赋给了`expectedModCount`，然后当我们执行循环调用`List.remove`方法的时候，`modCount`改变了但是`expectedModCount`并没有改变，当
-第一次循环结束删除一个数据准备第二次循环调用`iterator.hasNext()`方法的时候，`checkForComodification()`方法就会抛出异常，因为此时`List`的
-`modCount`已经变为了2，而`expectedModCount`仍然是3，所以会抛出`ConcurrentModificationException`异常；
+在`modCount != expectedModCount`这个条件成立的时候会抛出`ConcurrentModificationException`异常，那么这个条件是怎么成立的呢？
+
+1、首先我们查看`modCount`的来源，可以发现`modCount`的值等于当前List的`size`，当调用`List.remove`方法的时候`modCount`也会相应的减1；
+
+2、然后我们查看`expectedModCount`的来源，可以看到是在构造`Iterator`（这里使用的是ArrayList的内部实现）的时候，有一个变量赋值，将`modCount`
+的值赋给了`expectedModCount`；
+
+3、最后当我们执行循环调用`List.remove`方法的时候，`modCount`改变了但是`expectedModCount`并没有改变，当第一次循环结束删除一个数据准
+备第二次循环调用`iterator.hasNext()`方法的时候，`checkForComodification()`方法就会抛出异常，因为此时`List`的`modCount`已经变为
+了2，而`expectedModCount`仍然是3，所以会抛出`ConcurrentModificationException`异常；
 
 ## 解决方法
 那么如何解决该问题呢？我们查看`java.util.ArrayList.Itr`（ArrayList中的Iterator实现）的源码可以发现，在该迭代器中有一个`remove`方法可以
