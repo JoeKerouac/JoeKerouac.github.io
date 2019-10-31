@@ -132,6 +132,9 @@ public void remove() {
     }
 }
 ```
+其中`ArrayList.this.remove(lastRet);`这一行会改变`modCount`的值，而后边会同步的修改`expectedModCount`的值等于`modCount`的值；
+
+
 现在修改我们开头的程序如下就可以正常运行了：
 ```
 import java.util.List;
