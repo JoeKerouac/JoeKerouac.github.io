@@ -92,6 +92,8 @@ autocmd vimenter * NERDTree
 " ----------------------------普通配置开始，不依赖任何插件----------------------------
 " 不去兼容vi命令
 set nocompatible
+" vim配色方案，可以在/usr/share/vim/vim62/colors中查看所有配色方案
+colorscheme desert
 " 在下边显示当前是命令模式还是插入模式
 set showmode
 " 支持256色，默认是8色
