@@ -35,9 +35,15 @@
 | l | 右移 |
 | j | 下移 |
 | k | 上移 |
+| o | 当前行下插入一行并启动编辑 |
 
 
 ## vim好用的插件
+### Vundle
+Vundle可以帮你管理vim插件，使用以下命令安装：
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+
 ### ctags
 可以让vim拥有跳转源码的功能，使用说明：
 - 首先在服务器安装ctags，安装命令：`yum install ctags -y`；
@@ -67,6 +73,9 @@ Plugin 'VundleVim/Vundle.vim'
 " NERDTree目录树工具
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 
+" 使用该插件代替每次复制前的 set paste 命令，防止格式错乱，同时复制的时候也不会匹配后边的快捷输入
+Plugin 'https://github.com/ConradIrwin/vim-bracketed-paste'
+
 " vim中的git插件
 Plugin 'tpope/vim-fugitive'
 
@@ -77,10 +86,16 @@ filetype plugin indent on    " Vundle必须
 " ----------------------------插件配置开始，依赖相关插件----------------------------
 " 自动打开NERDTree（目录树），该命令依赖于NERDTree插件
 autocmd vimenter * NERDTree
-" ----------------------------插件配置开始，依赖相关插件----------------------------
+" ----------------------------插件配置结束，依赖相关插件----------------------------
 
 
 " ----------------------------普通配置开始，不依赖任何插件----------------------------
+" 不去兼容vi命令
+set nocompatible
+" 在下边显示当前是命令模式还是插入模式
+set showmode
+" 支持256色，默认是8色
+set t_Co=256
 " 设置行号
 set number
 " 突出显示当前行
