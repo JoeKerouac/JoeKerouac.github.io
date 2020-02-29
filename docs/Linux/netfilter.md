@@ -2,7 +2,11 @@
 ### 从内核发出到用户态
 大概的流程是：NF_HOOK -> nf_hook_slow(在这里面判断 verdict变量，如果是 NF_QUEUE，就调用nf_queue) -> nf_queue(里面会使
 用qh->outfn回调到nfqnl_enqueue_packet) -> nfqnl_enqueue_packet -> __nfqnl_enqueue_packet -> nfnetlink_unicast(这个时候
-是要把包发送到用户态，我继续跟踪进去) -> netlink_unicast -> netlink_sendskb -> __netlink_sendskb.
+是要把包发送到用户态，我继续跟踪进去) -> netlink_unicast -> netlink_sendskb -> __netlink_sendskb
+
+核心：发往用户态的消息是用`nfqnl_build_packet_message`函数构建的，在`__nfqnl_enqueue_packet`函数中调用
+
+sk_buff中data字段存放的是完整数据包，起始是ip头，然后tcp头，然后数据；
 
 
 nfqnl_enqueue_packet是如何注册的：
