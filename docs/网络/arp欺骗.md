@@ -20,3 +20,5 @@ systemctl stop firewalld
 
 ### 启动arp欺骗
 使用`clib`库中socket编程中arp相关的库发送arp欺骗响应即可； 
+
+注：`clib`目前是本人的git私有仓库；
