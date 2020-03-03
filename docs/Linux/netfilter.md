@@ -31,9 +31,3 @@ nfnetlink模块初始化的时候使用netlink_kernel_create创建了netlink的s
 
 ### 其他
 netfilter发送netlink消息的构建：在__nfqnl_enqueue_packet方法(net/netfilter/nfnetlink_queue.c)中调用nfqnl_build_packet_message(net/netfilter/nfnetlink_queue.c)构建消息
-
-
-
-
-
-skb中放入数据顺序：(nfgenmsg)nlmsghdr->(nlattr)nfqnl_msg_packet_hdr->
