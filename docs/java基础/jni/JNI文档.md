@@ -118,3 +118,6 @@ export C_INCLUDE_PATH
 
 8、运行，运行方式有两种，如果代码中是使用`System.load`的方式写死动态库路径加载的，那么直接使用`java Test`即可运行，否则要使
 用`java -Djava.library.path=动态库路径 Test`来运行；
+
+## 其他
+JNI头文件定义：http://home.pacifier.com/~mmead/jni/cs510ajp/jni.h
