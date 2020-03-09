@@ -121,3 +121,4 @@ export C_INCLUDE_PATH
 
 ## 其他
 JNI头文件定义：http://home.pacifier.com/~mmead/jni/cs510ajp/jni.h
+JNI文档：https://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/functions.html
