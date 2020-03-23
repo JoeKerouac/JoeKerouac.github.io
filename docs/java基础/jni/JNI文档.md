@@ -122,3 +122,7 @@ export C_INCLUDE_PATH
 ## 其他
 JNI头文件定义：http://home.pacifier.com/~mmead/jni/cs510ajp/jni.h
 JNI文档：https://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/functions.html
+
+## 错误定位
+程序native代码出错时，可以对core文件进行分析，首先gcc编译的时候要使用`-g2`选项带上调试信息，然后运行代码，出错的时候生成core文件，使
+用`gdb java core文件`命令开始分析core文件，然后使用`bt`命令打印调用栈，看代码是在哪一行出错的，然后在具体分析；
