@@ -1,0 +1,6 @@
+- TLS 1.0标准:https://tools.ietf.org/html/rfc2246
+- TLS 1.1标准:https://tools.ietf.org/html/rfc4346
+- TLS 1.2标准:https://tools.ietf.org/html/rfc5246
+- TLS 1.3标准:https://tools.ietf.org/html/rfc8446
+- ECCDH相关:https://tools.ietf.org/html/rfc4492
+- PSK算法说明：https://tools.ietf.org/html/rfc4279
