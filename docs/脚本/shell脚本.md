@@ -103,3 +103,27 @@ KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=$pod_img"
 KUBELET_ARGS="--cluster_dns=$dns_addr --cluster_domain=cluster.local"
 EOF
 ```
+
+## 获取当前目录
+```
+# $0表示获取当前执行的sh的目录（如果是sh命令执行的，这里获取到的是相对文件路径，如果是sh中又用exec命令执行了，那么获取的是当前执行文件的绝对路径）
+# 例如在/home目录使用sh test1.sh，那么PRG就是.test1.sh，如果该文件又执行了exec test2.sh，那么这时PRG就会变成/root/test2.sh，这里变成
+# 绝对路径而不是相对路径了
+PRG="$0"
+
+# -h表示判断文件是否是软链接
+# 下面这个用于获取真实路径
+while [ -h "$PRG" ]; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG=`dirname "$PRG"`/"$link"
+  fi
+done
+
+# Get standard environment variables
+# 这里获取到的就是当前的目录（如果是sh执行就是相对路径，如果是exec就是绝对路径）
+PRGDIR=`dirname "$PRG"`
+```
