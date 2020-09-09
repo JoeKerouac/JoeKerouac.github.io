@@ -53,6 +53,10 @@ Deployment 可以部署多个副本，每个 Pod 都有自己的 IP，外界如�
 的 IP 会发生变化，用 IP 来访问不太现实。答案是 Service。Kubernetes Service 定义了外界访问一组特定 Pod 的方式。Service 有自己的 IP 和端
 口，Service 为 Pod 提供了负载均衡。Kubernetes 运行容器（Pod）与访问容器（Pod）这两项任务分别由 Controller 和 Service 执行。
 
+### Endpoint
+提供对需要独立部署在K8S集群外的服务的访问，例如mysql，一般mysql是单独部署的，那在K8S集群中怎么访问集群外的mysql呢？这时就可以通过创建一个
+Endpoint来实现，Endpoint可以指定外部的ip和port，然后通过service包装给内部集群使用；
+
 ### Namespace
 如果有多个用户或项目组使用同一个 Kubernetes Cluster，如何将他们创建的 Controller、Pod 等资源分开呢？答案就是 Namespace。Namespace 可以
 将一个物理的 Cluster 逻辑上划分成多个虚拟 Cluster，每个 Cluster 就是一个 Namespace。不同 Namespace 里的资源是完全隔离的。Kubernetes 默
