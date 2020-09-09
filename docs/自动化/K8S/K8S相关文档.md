@@ -22,8 +22,15 @@ kubernets引入pod主要基于下面两个目的：
 Pod有两种使用方式：
 - 运行单一容器；one-container-per-Pod 是 Kubernetes 最常见的模型，这种情况下，只是将单个容器简单封装成 Pod。即便是只有一个容
   器，Kubernetes 管理的也是Pod而不是直接管理容器。
-
 - 运行多个容器；但问题在于：哪些容器应该放到一个Pod中？答案是：这些容器联系必须 非常紧密，而且需要 直接共享资源。
+
+Pod是一个虚拟概念（基于linux的namespace和cgroups），使用类容器技术进行资源隔离，Pod中的网络、存储共享；
+
+#### Pod的网络共享
+网络共享是通过Pause容器实现的，所有Pod中都肯定会有一个Pause容器，该容器会在Pod启动的时候优先启动，然后其他容器通过Join Namespace的方式
+加入该容器的Network Namespace，所以一个Pod中所有容器看到的网络视图是一模一样的，就跟一个容器一样；
+
+也因此，Pause容器的生命周期跟Pod是完全相同的
 
 ### Controller
 Kubernetes 通常不会直接创建 Pod，而是通过 Controller 来管理 Pod 的。Controller 中定义了 Pod 的部署特性，比如有几个副本，在什么样
