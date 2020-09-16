@@ -127,3 +127,18 @@ done
 # 这里获取到的就是当前的目录（如果是sh执行就是相对路径，如果是exec就是绝对路径）
 PRGDIR=`dirname "$PRG"`
 ```
+
+## 获取PID
+```
+# 获取当前shell的PID
+echo $$
+
+# 获取Shell最后运行的后台Process的PID
+echo $!
+
+# 例如，对于下面的命令，获取出来的就是Test2的PID
+nohup Test1 &
+nohup Test2 &
+# 这是$!获取到的就是Test2的PID
+echo $!
+```
