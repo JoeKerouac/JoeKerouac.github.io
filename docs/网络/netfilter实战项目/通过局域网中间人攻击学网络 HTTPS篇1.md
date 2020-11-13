@@ -37,8 +37,10 @@
 一个丐版的HTTPS握手流程，在 [git仓库](https://github.com/JoeKerouac/net) 中，如果等不及后续文章更新可以先看源码学习，里边仅实现了
 两个加密套件，同时对于重连等复杂场景也没有处理，所以称其为丐版HTTPS握手，不过用来学习基本也够了；
 
+## 联系我
+- 作者微信：JoeKerouac
+- 微信公众号（文章会第一时间更新到公众号）：Java初学者
+- GitHub：https://github.com/JoeKerouac
 
-
-
-### 参考文献
+## 参考文献
 - TLS1.2定义：https://tools.ietf.org/html/rfc5246
