@@ -78,6 +78,7 @@
 Vundle可以帮你管理vim插件，使用以下命令安装：
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
+可以在vim界面使用`:PluginInstall`命令来安装插件；
 
 ### ctags
 可以让vim拥有跳转源码的功能，使用说明：
@@ -92,6 +93,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 
 ## vim常用配置
+在`~/.vimrc`文件中添加以下配置
 ```
 " ----------------------------Vundle配置开始----------------------------
 set nocompatible              " Vundle必须
