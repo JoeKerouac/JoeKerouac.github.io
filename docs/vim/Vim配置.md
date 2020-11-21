@@ -80,6 +80,9 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 可以在vim界面使用`:PluginInstall`命令来安装插件；
 
+### 
+Linux安装超级tab自动补全：`yum -y install bash-completion  bash-completion-extras`；
+
 ### ctags
 可以让vim拥有跳转源码的功能，使用说明：
 - 首先在服务器安装ctags，安装命令：`yum install ctags -y`；
@@ -109,6 +112,9 @@ Plugin 'VundleVim/Vundle.vim'
 
 " NERDTree目录树工具
 Plugin 'https://github.com/scrooloose/nerdtree.git'
+
+" Supertab插件，使用tab键完成代码提示
+Plugin 'https://github.com/ervandew/supertab.git'
 
 " 使用该插件代替每次复制前的 set paste 命令，防止格式错乱，同时复制的时候也不会匹配后边的快捷输入
 Plugin 'https://github.com/ConradIrwin/vim-bracketed-paste'
