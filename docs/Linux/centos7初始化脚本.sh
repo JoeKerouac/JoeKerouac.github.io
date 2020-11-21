@@ -172,3 +172,6 @@ imap psvm public static void main(String[<Esc>la args<Esc>la{<CR><CR><Esc>ki<Tab
 imap sout System.out.println(<Esc>la;<Esc>hi
 " ----------------------------普通配置结束，不依赖任何插件----------------------------
 EOF
+
+# 安装vim插件
+vim +PluginInstall +qall
