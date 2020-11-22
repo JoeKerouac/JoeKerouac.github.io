@@ -48,6 +48,13 @@ echo "初始化K8S配置目录..."
 mkdir /etc/kubernetes
 fi
 ```
+
+## 判断文件是否存在
+```
+if [ ! -f "/root/Test.java" ]; then
+echo "Test.java不存在"
+fi
+```
 	
 ## 远程执行命令等：
 ```
@@ -94,6 +101,8 @@ done
 ```
 	
 ## 写入多行到文件：
+> 注意，这个会覆盖源文件，如果不想覆盖，则使用`cat << EOF >> fileName`这种写法，另外EOF可以替换为任意其他单词，只要前后匹配即可；
+
 ```
 cat << EOF > /etc/kubernetes/kubelet
 KUBELET_ADDRESS="--address=0.0.0.0"

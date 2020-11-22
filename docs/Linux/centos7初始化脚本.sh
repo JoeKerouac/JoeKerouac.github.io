@@ -1,60 +1,11 @@
-# 更改yum源为清华大学的
+# 发生错误时退出
+set -o errexit
+# 更改yum源为网易163的
 # 先备份
-cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
-# 更改yum源
-echo '
-# CentOS-Base.repo
-#
-# The mirror system uses the connecting IP address of the client and the
-# update status of each mirror to pick mirrors that are updated to and
-# geographically close to the client.  You should use this for CentOS updates
-# unless you are manually picking other mirrors.
-#
-# If the mirrorlist= does not work for you, as a fall back you can try the
-# remarked out baseurl= line instead.
-#
-#
-
-
-[base]
-name=CentOS-$releasever - Base
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos/$releasever/os/$basearch/
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-7
-
-#released updates
-[updates]
-name=CentOS-$releasever - Updates
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos/$releasever/updates/$basearch/
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-7
-
-
-
-#additional packages that may be useful
-[extras]
-name=CentOS-$releasever - Extras
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos/$releasever/extras/$basearch/
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-7
-
-
-
-#additional packages that extend functionality of existing packages
-[centosplus]
-name=CentOS-$releasever - Plus
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos/$releasever/centosplus/$basearch/
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-7
-' > /etc/yum.repos.d/CentOS-Base.repo.bak
+# shellcheck disable=SC2046
+echo "更改yum源为网易163"
+cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak.$(date "+%Y-%m-%d_%H:%M:%S")
+curl http://mirrors.163.com/.help/CentOS7-Base-163.repo -o /etc/yum.repos.d/CentOS-Base.repo
 
 # 刷新缓存
 yum makecache
@@ -62,13 +13,40 @@ yum makecache
 yum -y update
 
 # 安装vim、net-tools工具、git
-yum install -y vim net-tools bash-completion bash-completion-extras git
+yum install -y vim net-tools bash-completion bash-completion-extras git ctags
 
-# 安装vundle管理vim插件
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+
+installVimPlugin() {
+  echo -e "\n\n准备安装vim插件：$1";
+  # 如果当前没有安装，则安装
+  if [ ! -d $1 ]; then
+    git clone --depth=1 $2 ~/.vim/bundle/$1
+  else
+    echo "当前vim插件[$1]已安装"
+  fi
+  echo "vim插件$1安装完成"
+}
+
+echo "开始手动安装初始化vim插件"
+# 安装vundle管理vim插件，先判断是否存在，有可能已经存在了
+installVimPlugin "Vundle.vim" "https://github.com/gmarik/vundle.git"
+installVimPlugin "nerdtree" "https://github.com/scrooloose/nerdtree.git"
+installVimPlugin "supertab" "https://github.com/ervandew/supertab.git"
+installVimPlugin "ale" "https://github.com/dense-analysis/ale.git"
+installVimPlugin "vim-bracketed-paste" "https://github.com/ConradIrwin/vim-bracketed-paste.git"
+installVimPlugin "vim-fugitive" "https://github.com/tpope/vim-fugitive.git"
+installVimPlugin "vim-tags" "https://github.com/vim-scripts/vim-tags.git"
+installVimPlugin "taglist" "https://github.com/vim-scripts/taglist.vim.git"
+
+
+# 如果vimrc配置文件已经存在，那么备份
+if [ -f "${HOME}/.vimrc" ]; then
+  # shellcheck disable=SC2046
+  mv ~/.vimrc ~/.vimrc.bak.$(date "+%Y-%m-%d_%H:%M:%S")
+fi
 
 # 配置vim
-cat << EOF > ~/.vim
+cat << EOF > ~/.vimrc
 " ----------------------------Vundle配置开始----------------------------
 set nocompatible              " Vundle必须
 filetype off                  " Vundle必须
@@ -87,11 +65,19 @@ Plugin 'https://github.com/scrooloose/nerdtree.git'
 " Supertab插件，使用tab键完成代码提示
 Plugin 'https://github.com/ervandew/supertab.git'
 
+Plugin 'https://github.com/vim-scripts/vim-tags.git'
+
+" 依赖ctags，代码浏览器，提供快速预览文件中的函数和变量的功能
+Plugin 'https://github.com/vim-scripts/taglist.vim.git'
+
+" 异步语法提示
+Plugin 'https://github.com/dense-analysis/ale.git'
+
 " 使用该插件代替每次复制前的 set paste 命令，防止格式错乱，同时复制的时候也不会匹配后边的快捷输入
-Plugin 'https://github.com/ConradIrwin/vim-bracketed-paste'
+Plugin 'https://github.com/ConradIrwin/vim-bracketed-paste.git'
 
 " vim中的git插件
-Plugin 'tpope/vim-fugitive'
+Plugin 'https://github.com/tpope/vim-fugitive.git'
 
 call vundle#end()            " Vundle必须
 filetype plugin indent on    " Vundle必须
@@ -103,6 +89,13 @@ autocmd vimenter * NERDTree
 "配置nerdtree使用F3打开关闭
 map <F3> :NERDTreeMirror <CR>
 map <F3> :NERDTreeToggle <CR>
+
+
+" 配置快速调用taglist功能的映射，注意，下面两个映射依赖于后边普通配置的alt键映射修复
+" 插入模式的映射，只在插入模式有效
+inoremap <A-7> <Esc>:Tlist<Enter>a
+" 普通模式的映射，只在普通模式有效
+nnoremap <A-7> :Tlist<Enter>
 " ----------------------------插件配置结束，依赖相关插件----------------------------
 
 
@@ -147,8 +140,6 @@ set expandtab
 set softtabstop=4
 " 设置tab键宽4个空格
 set tabstop=4
-" 开启语法高亮
-syntax enable
 " vim命令使用tab自动补全
 set wildmenu
 " 文件自动更新
@@ -157,6 +148,24 @@ set autoread
 map 9 $
 " 设置在右下角显示输入的命令
 set showcmd
+
+" 修复alt快捷键映射问题，因为alt+key通过终端发送到Linux的实际上是Esc+key，也就是当你按下Alt+1的时候实际通过终端发送到Linux上的是Esc+1，所以
+" 这里通过循环的方式，将Alt+[0-9]的快捷键都重新映射为Esc+[0-9]，这样可以最简单的解决快捷键映射问题，但是这有可能造成一个新的问
+" 题，就是当我们按下Alt+1的时候实际上vim感知到的是Esc+1，而当我们真的想按下Esc+1的时候有可能跟我们的alt快捷键冲突，例如设置alt+i是删除，这样
+" 当我们使用Esc从插入模式退出到普通模式，然后迅速的按i想要进入插入模式时，此时实际会执行删除操作，不过该问题可以通过设置较短的timeoutlen来解决
+" 设置mapping延迟，单位毫秒，超过该时间后key map失效
+set timeoutlen=1000
+" 设置key code的延迟
+set ttimeoutlen=1000
+let c='a'
+
+let c='0'
+while c <= '9'
+  exec "set <M-".toupper(c).">=\e".c
+  exec "imap \e".c." <M-".toupper(c).">"
+  let c = nr2char(1+char2nr(c))
+endw
+
 
 " 输入的时候对(进行映射，输入(后会自动补全)并且将光标置于两个括号之间，下同或类似
 imap ( ()<Esc>i
@@ -175,3 +184,28 @@ EOF
 
 # 安装vim插件
 vim +PluginInstall +qall
+
+# 将vi重命名为vim
+cat << EOF >> ~/.bash_profile
+alias vi=vim
+EOF
+
+source ~/.bash_profile
+
+echo -e "\n\n安装清单："
+echo -e "\t|___更改yum源为网易163"
+echo -e "\t|___安装vim"
+echo -e "\t|___安装net-tools"
+echo -e "\t|___安装bash-completion"
+echo -e "\t|___安装bash-completion-extras"
+echo -e "\t|___安装git"
+echo -e "\t|___vim插件安装列表："
+echo -e "\t|\t|___Vundle.vim"
+echo -e "\t|\t|___nerdtree"
+echo -e "\t|\t|___supertab"
+echo -e "\t|\t|___ctags-vim"
+echo -e "\t|\t|___ale"
+echo -e "\t|\t|___vim-bracketed-paste"
+echo -e "\t|\t|___vim-fugitive"
+echo -e "\t|___系统vi命令替换为vim"
+echo -e "enjoy that"
