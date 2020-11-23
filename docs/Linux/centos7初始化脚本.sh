@@ -32,8 +32,8 @@ else
 fi
 
 
-# 安装net-tools工具
-yum install -y net-tools bash-completion bash-completion-extras ctags
+# 安装net-tools等工具，clang是后边vim的ale插件进行语法检查需要使用
+yum install -y net-tools bash-completion bash-completion-extras ctags clang
 
 
 installVimPlugin() {
@@ -104,24 +104,78 @@ filetype plugin indent on    " Vundle必须
 " ----------------------------Vundle配置结束----------------------------
 
 " ----------------------------插件配置开始，依赖相关插件----------------------------
+
+" ===========================NERDTree插件配置开始==================================
 " 自动打开NERDTree（目录树），该命令依赖于NERDTree插件
 autocmd vimenter * NERDTree
-"配置nerdtree使用F3打开关闭
-map <F3> :NERDTreeMirror <CR>
-map <F3> :NERDTreeToggle <CR>
+"配置nerdtree使用alt+1打开关闭
+nmap <A-1> :NERDTreeToggle <CR>
+imap <A-1> <Esc>:NERDTreeToggle <CR>
+" ===========================NERDTree插件配置结束==================================
 
 
+" ===========================taglist插件配置开始==================================
 " 配置快速调用taglist功能的映射，注意，下面两个映射依赖于后边普通配置的alt键映射修复
 " 插入模式的映射，只在插入模式有效
 inoremap <A-7> <Esc>:Tlist<Enter>a
 " 普通模式的映射，只在普通模式有效
 nnoremap <A-7> :Tlist<Enter>
+" 窗口显示在右侧，等于1是显示在左侧
+let Tlist_Use_Right_Window = 2
+" 如果只有taglist一个窗口，那么关闭vim
+let Tlist_Exist_OnlyWindow = 1
+"设置tablist插件只显示当前编辑文件的tag内容，而非当前所有打开文件的tag内容
+let Tlist_Show_One_File = 1
+" ===========================taglist插件配置结束==================================
+
+
+" ===========================ale插件配置开始==================================
+" 使用clang对c、c++进行语法检查，需要保证机器上有clang（yum install clang）
+let g:ale_linters = {
+\   'c++': ['clang'],
+\   'c': ['clang'],
+\}
+" 自定义error和warning图标
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚡'
+"显示Linter名称,出错或警告等相关信息
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" 普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+nmap sp <Plug>(ale_previous_wrap)
+nmap sn <Plug>(ale_next_wrap)
+" <Leader>d查看错误或警告的详细信息（<Leader>键就是反斜杠\键）
+nmap <Leader>d :ALEDetail<CR>
+
+" 自定义的ALE状态栏，显示当前的语法错误数量
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \  '%d ⚡   %d ✗',
+    \  all_non_errors,
+    \  all_errors
+    \)
+endfunction
+" 设置状态栏显示内容
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%y/%m/%d/\ -\ %H:%M\")}\   %{LinterStatus()}
+" ===========================ale插件配置结束==================================
+
 " ----------------------------插件配置结束，依赖相关插件----------------------------
 
 
 " ----------------------------普通配置开始，不依赖任何插件----------------------------
-" 设置搜索时忽略大小写
-set ignorecase
+" 开启语法高亮
+syntax enable
+syntax on
+" history文件需要记录的行数
+set history=500
+" 默认情况下vim中删除键只能删除本次打开文件新插入的内容，该配置可以使删除键随意删除内容
+set backspace=2
 " 不去兼容vi命令
 set nocompatible
 " vim配色方案，可以在/usr/share/vim/vim62/colors中查看所有配色方案
@@ -168,6 +222,8 @@ set autoread
 map 9 $
 " 设置在右下角显示输入的命令
 set showcmd
+" 设置右下角显示当前光标行号信息
+set ruler
 
 " 修复alt快捷键映射问题，因为alt+key通过终端发送到Linux的实际上是Esc+key，也就是当你按下Alt+1的时候实际通过终端发送到Linux上的是Esc+1，所以
 " 这里通过循环的方式，将Alt+[0-9]的快捷键都重新映射为Esc+[0-9]，这样可以最简单的解决快捷键映射问题，但是这有可能造成一个新的问
@@ -210,8 +266,6 @@ cat << EOF >> ~/.bash_profile
 alias vi=vim
 EOF
 
-source ~/.bash_profile
-
 echo -e "\n\n安装清单："
 echo -e "\t|___更改yum源为网易163"
 echo -e "\t|___安装gcc"
@@ -221,6 +275,7 @@ echo -e "\t|___安装net-tools"
 echo -e "\t|___安装bash-completion"
 echo -e "\t|___安装bash-completion-extras"
 echo -e "\t|___安装git"
+echo -e "\t|___安装clang"
 echo -e "\t|___vim插件安装列表："
 echo -e "\t|\t|___Vundle.vim"
 echo -e "\t|\t|___nerdtree"
