@@ -12,8 +12,28 @@ yum makecache
 # 更新
 yum -y update
 
-# 安装vim、net-tools工具、git
-yum install -y vim net-tools bash-completion bash-completion-extras git ctags
+cd ~/
+
+# 编译VIM必须的依赖
+yum install -y ncurses-devel.x86_64 gcc git
+
+if ! [ -x "$(command -v vim)" ]; then
+  echo "安装vim..."
+  # 下载vim最新源码
+  git clone --depth=1 https://github.com/vim/vim.git
+  # 切换到vim目录，然后配置，巨型安装，同时允许多字节（支持中文，--enable-multibyte选项）
+  cd vim
+  ./configure --with-features=huge --enable-multibyte
+  make
+  make install
+  echo "vim安装完毕"
+else
+  echo "当前系统已经存在vim，跳过vim安装"
+fi
+
+
+# 安装net-tools工具
+yum install -y net-tools bash-completion bash-completion-extras ctags
 
 
 installVimPlugin() {
@@ -62,7 +82,7 @@ Plugin 'VundleVim/Vundle.vim'
 " NERDTree目录树工具
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 
-" Supertab插件，使用tab键完成代码提示
+" Supertab插件，使用tab键完成代码提示，依赖bash-completion，bash-completion-extras
 Plugin 'https://github.com/ervandew/supertab.git'
 
 Plugin 'https://github.com/vim-scripts/vim-tags.git'
@@ -194,6 +214,8 @@ source ~/.bash_profile
 
 echo -e "\n\n安装清单："
 echo -e "\t|___更改yum源为网易163"
+echo -e "\t|___安装gcc"
+echo -e "\t|___安装ncurses-devel.x86_64"
 echo -e "\t|___安装vim"
 echo -e "\t|___安装net-tools"
 echo -e "\t|___安装bash-completion"

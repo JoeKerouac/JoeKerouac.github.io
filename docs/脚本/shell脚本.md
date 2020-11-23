@@ -151,3 +151,12 @@ nohup Test2 &
 # 这是$!获取到的就是Test2的PID
 echo $!
 ```
+
+## 检测命令是否存在
+```
+# 检测git是否存在
+if ! [ -x "$(command -v git)" ]; then
+  echo 'Error: git is not installed.' >&2
+  exit 1
+fi
+```
