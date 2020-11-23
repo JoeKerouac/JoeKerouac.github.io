@@ -161,8 +161,8 @@ function! LinterStatus() abort
     \  all_errors
     \)
 endfunction
-" 设置状态栏显示内容
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%y/%m/%d/\ -\ %H:%M\")}\   %{LinterStatus()}
+" 设置状态栏显示内容，注意，空格只能有一个
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%y/%m/%d/\ -\ %H:%M\")}\ %{LinterStatus()}
 " ===========================ale插件配置结束==================================
 
 " ----------------------------插件配置结束，依赖相关插件----------------------------
