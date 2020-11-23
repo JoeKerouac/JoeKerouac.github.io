@@ -252,6 +252,13 @@ imap [ []<Esc>i
 inoremap " ""<Esc>i
 inoremap ' ''<Esc>i
 
+
+" 在插入模式下将ctrl+h、j、k、l分别映射为左、下、上、右方向键
+inoremap <C-h> <Esc>i
+inoremap <C-j> <Esc>ja
+inoremap <C-k> <Esc>ka
+inoremap <C-l> <Esc>la
+
 " Java常用，因为上边定义好了自动补全括号和引号，所以这里不需要输入后括号和引号
 imap psvm public static void main(String[<Esc>la args<Esc>la{<CR><CR><Esc>ki<Tab><Tab>
 imap sout System.out.println(<Esc>la;<Esc>hi
