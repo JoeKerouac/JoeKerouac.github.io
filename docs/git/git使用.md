@@ -49,6 +49,12 @@ git push --force --tags origin 'refs/heads/*
 6. 最后到github上查看作者是否更改
 
 
+# 多个remote管理
+如果项目有多个remote，比如某个人fork出去一份，然后在fork的仓库修改代码，最后要MR过来，我们想要本地对比下代码，这时可以首先在本地使用命令
+`git remote add [localName] [url]`创建一个新分支（注意将`[localName]`替换为自己想要设置的remote的本地名，将`[url]`替换为实际的远程
+git地址，然后使用`git fetch hepangui`命令拉取该remote的所有远程分支，最后使用`git co -b [branchName] [remoteName]/[remoteBranch]`
+命令来切换到某个远程分支；
+
 # fork项目新分支拉取
 1. 将项目B clone 到本地
 
