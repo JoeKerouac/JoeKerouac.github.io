@@ -233,7 +233,6 @@ set ruler
 set timeoutlen=1000
 " 设置key code的延迟
 set ttimeoutlen=1000
-let c='a'
 
 let c='0'
 while c <= '9'
