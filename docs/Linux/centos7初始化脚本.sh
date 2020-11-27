@@ -277,6 +277,10 @@ inoremap <C-j> <down>
 inoremap <C-k> <up>
 inoremap <C-l> <right>
 
+" 插入模式和普通模式下使用alt+3格式化代码
+inoremap <A-3> <Esc>ggvG$=
+nnoremap <A-3> ggvG$=
+
 " Java常用，因为上边定义好了自动补全括号和引号，所以这里不需要输入后括号和引号
 imap psvm public static void main(String[<Esc>la args<Esc>la{<CR><CR><Esc>ki<Tab><Tab>
 imap sout System.out.println(<Esc>la;<Esc>hi
