@@ -7,12 +7,13 @@ echo "更改yum源为网易163"
 cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak.$(date "+%Y-%m-%d_%H:%M:%S")
 curl http://mirrors.163.com/.help/CentOS7-Base-163.repo -o /etc/yum.repos.d/CentOS-Base.repo
 
+# 第三方源，里边的软件比较新，而且比默认RHEL的多
+yum install -y epel-release
+
 # 刷新缓存
 yum makecache
 # 更新
 yum -y update
-
-cd ~/
 
 # 编译VIM必须的依赖
 yum install -y ncurses-devel.x86_64 gcc git
@@ -20,7 +21,7 @@ yum install -y ncurses-devel.x86_64 gcc git
 if ! [ -x "$(command -v vim)" ]; then
   echo "安装vim..."
   # 下载vim最新源码
-  git clone --depth=1 https://github.com/vim/vim.git
+  git clone --depth=1 https://github.com/vim/vim.git ~/vim
   # 切换到vim目录，然后配置，巨型安装，同时允许多字节（支持中文，--enable-multibyte选项）
   cd vim
   ./configure --with-features=huge --enable-multibyte
@@ -57,6 +58,7 @@ installVimPlugin "vim-bracketed-paste" "https://github.com/ConradIrwin/vim-brack
 installVimPlugin "vim-fugitive" "https://github.com/tpope/vim-fugitive.git"
 installVimPlugin "vim-tags" "https://github.com/vim-scripts/vim-tags.git"
 installVimPlugin "taglist" "https://github.com/vim-scripts/taglist.vim.git"
+installVimPlugin "asyncrun" "https://github.com/skywind3000/asyncrun.vim.git"
 
 
 # 如果vimrc配置文件已经存在，那么备份
@@ -93,6 +95,9 @@ Plugin 'https://github.com/vim-scripts/taglist.vim.git'
 " 异步语法提示
 Plugin 'https://github.com/dense-analysis/ale.git'
 
+" 在vim（version >= 8）中异步运行任务，在任务运行时就可继续编辑操作
+Plugin 'https://github.com/skywind3000/asyncrun.vim.git'
+
 " 使用该插件代替每次复制前的 set paste 命令，防止格式错乱，同时复制的时候也不会匹配后边的快捷输入
 Plugin 'https://github.com/ConradIrwin/vim-bracketed-paste.git'
 
@@ -127,6 +132,20 @@ let Tlist_Exist_OnlyWindow = 1
 "设置tablist插件只显示当前编辑文件的tag内容，而非当前所有打开文件的tag内容
 let Tlist_Show_One_File = 1
 " ===========================taglist插件配置结束==================================
+
+
+" ===========================asyncrun插件配置结束==================================
+" 自动打开 quickfix window ，高度为 6
+let g:asyncrun_open = 6
+
+" 任务结束时候响铃提醒
+let g:asyncrun_bell = 1
+
+" 设置 F10 打开/关闭 Quickfix 窗口
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+inoremap <F10> <Esc>:call asyncrun#quickfix_toggle(6)<cr>
+" ===========================asyncrun插件配置结束==================================
+
 
 
 " ===========================ale插件配置开始==================================
@@ -290,5 +309,6 @@ echo -e "\t|\t|___ctags-vim"
 echo -e "\t|\t|___ale"
 echo -e "\t|\t|___vim-bracketed-paste"
 echo -e "\t|\t|___vim-fugitive"
+echo -e "\t|\t|___asyncrun"
 echo -e "\t|___系统vi命令替换为vim"
 echo -e "enjoy that"
