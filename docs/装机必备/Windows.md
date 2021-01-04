@@ -37,47 +37,36 @@ Windows terminal配置：
     // To learn more about profiles, visit https://aka.ms/terminal-profile-settings
     "profiles":
     {
-        "defaults":
-        {
-            // Put settings here that you want to apply to all profiles.
-        },
+      "defaults": {
+        // Put settings here that you want to apply to all profiles.
+        // 自定义部分，全局有效
+        "fontFace": "Consolas",
+        "colorScheme": "Vintage", // Campbell，Vintage，One Half Dark，Tango Dark,Frost
+        "useAcrylic": false, // 毛玻璃的效果（这里给关闭掉，不然窗口后边的背景如果是白色的窗口将会泛白）
+        "backgroundImage": "C:\\Users\\JoeKerouac\\Pictures\\Saved Pictures\\terminal.jpg", //背景图片
+        "backgroundImageOpacity": 0.2 //背景透明度
+      },
       "list": [
         {
           // Make changes here to the powershell.exe profile.
           "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
           "name": "Windows PowerShell",
           "commandline": "powershell.exe",
-          "hidden": false,
-          // 自定义部分
-          "fontFace": "Consolas",
-          "colorScheme": "Campbell", // Campbell，Vintage，One Half Dark，Tango Dark
-          "useAcrylic": false, // 关闭毛玻璃的效果
-          "backgroundImage": "C:\\Users\\JoeKerouac\\Pictures\\Saved Pictures\\terminal.jpg", //背景图片
-          "backgroundImageOpacity": 0.2 //背景透明度
+          "hidden": false
         },
         {
           // centos1配置
-          "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+          "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ba}",
           "name": "centos1",
           "commandline": "ssh root@localhost -p40000",
-          "hidden": false,
-          // 自定义部分
-          "fontFace": "Consolas",
-          "colorScheme": "Campbell", // Campbell，Vintage，One Half Dark，Tango Dark
-          "useAcrylic": false, // 关闭毛玻璃的效果
-          "backgroundImage": "C:\\Users\\JoeKerouac\\Pictures\\Saved Pictures\\terminal.jpg", //背景图片
-          "backgroundImageOpacity": 0.2 //背景透明度
+          "hidden": false
         },
         {
           // Make changes here to the cmd.exe profile.
           "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
           "name": "Command Prompt",
           "commandline": "cmd.exe",
-          "hidden": false,
-          // 自定义部分
-          "fontFace": "Consolas",
-          "colorScheme": "Solarized Dark",
-          "useAcrylic": true //打开毛玻璃的效果
+          "hidden": false
         },
         {
           "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
@@ -334,5 +323,4 @@ Windows terminal配置：
         { "command": { "action": "splitPane", "split": "auto", "splitMode": "duplicate" }, "keys": "alt+shift+d" }
     ]
 }
-
 ```
