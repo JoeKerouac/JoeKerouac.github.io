@@ -24,7 +24,9 @@ if ! [ -x "$(command -v vim)" ]; then
   git clone --depth=1 https://github.com/vim/vim.git ~/vim
   # 切换到vim目录，然后配置，巨型安装，同时允许多字节（支持中文，--enable-multibyte选项）
   cd vim
-  ./configure --with-features=huge --enable-multibyte
+  # 配置支持gtk，不然后边的set clipboard=unnamed不会生效（无法使用系统剪切板）
+  # gtk是一个用于创建图形用户界面的免费和开源跨平台小部件工具包。
+  ./configure --with-features=huge --enable-multibyte --enable-gui=gtk2
   make
   make install
   echo "vim安装完毕"
@@ -243,6 +245,9 @@ map 9 $
 set showcmd
 " 设置右下角显示当前光标行号信息
 set ruler
+" 设置默认寄存器使用系统剪切板
+set clipboard=unnamed
+
 
 " 修复alt快捷键映射问题，因为alt+key通过终端发送到Linux的实际上是Esc+key，也就是当你按下Alt+1的时候实际通过终端发送到Linux上的是Esc+1，所以
 " 这里通过循环的方式，将Alt+[0-9]的快捷键都重新映射为Esc+[0-9]，这样可以最简单的解决快捷键映射问题，但是这有可能造成一个新的问
