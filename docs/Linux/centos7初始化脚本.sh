@@ -24,9 +24,7 @@ if ! [ -x "$(command -v vim)" ]; then
   git clone --depth=1 https://github.com/vim/vim.git ~/vim
   # 切换到vim目录，然后配置，巨型安装，同时允许多字节（支持中文，--enable-multibyte选项）
   cd vim
-  # 配置支持gtk，不然后边的set clipboard=unnamed不会生效（无法使用系统剪切板）
-  # gtk是一个用于创建图形用户界面的免费和开源跨平台小部件工具包。
-  ./configure --with-features=huge --enable-multibyte --enable-gui=gtk2
+  ./configure --with-features=huge --enable-multibyte
   make
   make install
   echo "vim安装完毕"
@@ -245,7 +243,7 @@ map 9 $
 set showcmd
 " 设置右下角显示当前光标行号信息
 set ruler
-" 设置默认寄存器使用系统剪切板
+" 设置默认寄存器使用系统剪切板（注意，这个在非桌面系统无用）
 set clipboard=unnamed
 
 
