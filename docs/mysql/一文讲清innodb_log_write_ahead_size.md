@@ -14,7 +14,7 @@ block size for the redo log and operating system or file system cache block size
 为了避免read-on-write，为redo log定义了write-ahead block size，单位byte，请将innodb_log_write_ahead_size参数的大小设置为操作系统或
 者文件系统的缓存块（对应的就是page cache），默认设置大小是8K，如果该参数大小设置的与page cache不匹配那么将会发生Read-on-write；
 ```
-翻译过来能读懂了，每个字都认识，但是这些字连起来是什么意思呢？如果懂这段话的意思，说明你对文件系统有一定的了解，那么后边的内容大概率你已经知道了，如果
+翻译过来每个字都认识，但是这些字连起来是什么意思呢？如果懂这段话的意思，说明你对文件系统有一定的了解，那么后边的内容大概率你已经知道了，如果
 不懂，那么后面就是解释这句话的意思；
 
 
