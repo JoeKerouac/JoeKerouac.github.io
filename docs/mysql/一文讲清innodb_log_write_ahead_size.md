@@ -1,4 +1,8 @@
 # 一文讲清MySQL的innodb_log_write_ahead_size参数
+MySQL调优的时候会遇到一个参数innodb_log_write_ahead_size，这个参数如果对计算机存储系统不了解的话很难理解，网上很多文章说的又不是很清晰，所
+以本文对该参数做一个解析；
+
+
 要想知道innodb_log_write_ahead_size参数怎么配置，最重要的就是先了解这个参数解决了什么问题，那么这个参数是解决什么问题的呢？官网对该参数的描述
 如下：
 
@@ -38,8 +42,8 @@ block size for the redo log and operating system or file system cache block size
 - 确保写出数据所在的磁盘page已经缓存在内存中了，而要确保这个只能先进行一次read将数据缓存到内存，这跟上边的read-on-write差不多了，只不过是我们手
   动调用了一次read IO，虽然没有发生系统层面的read-on-write，但实际上是等效的，所以这个方案不行；
 
-- 利用系统的另外一个特性，即如果IO满足一下两个条件则也不会发生`read-on-write`：
-  - 该IO的目的地址是磁盘上某个page的其实偏移地址；
+- 利用系统的另外一个特性，即如果IO满足以下两个条件则也不会发生`read-on-write`：
+  - 该IO的目的地址是磁盘上某个page的起始偏移地址；
   - 该IO的数据大小是page大小的整数倍；
  
 > 为什么如果没有缓存时必须发生一次read-on-write呢？其实很简单，因为系统写出的最小单位是page，如果不先把磁盘上指定区域的内容加载上来，那么在本次
