@@ -40,7 +40,7 @@
 
 ## 联系我
 - 作者微信：JoeKerouac
-- 微信公众号（文章会第一时间更新到公众号）：Java初学者
+- 微信公众号（文章会第一时间更新到公众号）：代码深度研究院
 - GitHub：https://github.com/JoeKerouac
 
 ## 参考文献
