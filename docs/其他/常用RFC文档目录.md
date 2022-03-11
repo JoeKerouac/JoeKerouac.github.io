@@ -6,3 +6,4 @@
 - PSK算法说明：https://tools.ietf.org/html/rfc4279
 - TCP文档：https://tools.ietf.org/html/rfc793
 - X.509证书相关：https://datatracker.ietf.org/doc/html/rfc5280
+- NAT相关文档（STUN）:https://datatracker.ietf.org/doc/html/rfc5389
