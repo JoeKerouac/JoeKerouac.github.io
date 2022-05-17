@@ -36,7 +36,7 @@ kubectl create secret generic traefik-tls --from-file=ssl.crt --from-file=ssl.ke
 > 默认安装到了kube-system命名空间
 
 要部署traefik，我们只需要在k8s中安装以下yaml文件即可（）：
-```yaml
+```
 
 kind: ConfigMap
 apiVersion: v1
@@ -476,7 +476,7 @@ spec:
 
 如下所示：
 
-```yaml
+```
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
