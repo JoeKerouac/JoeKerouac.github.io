@@ -59,7 +59,7 @@ data:
       # 应用http端口
       web:
         address: ":80"
-        # 设置forwardedHeaders为insecure，始终信任请求投中的X-Forwarded-*，也就是无论哪个ip过来的请求，我们都信任其携带的X-Forwarded-*请求头，将其转发到后端
+        # 设置forwardedHeaders为insecure，始终信任请求头中的X-Forwarded-*，也就是无论哪个ip过来的请求，我们都信任其携带的X-Forwarded-*请求头，将其转发到后端
         forwardedHeaders: 
           insecure: true
         transport:
@@ -77,7 +77,7 @@ data:
       # 应用https端口
       websecure:
         address: ":443"
-        # 设置forwardedHeaders为insecure，始终信任请求投中的X-Forwarded-*，也就是无论哪个ip过来的请求，我们都信任其携带的X-Forwarded-*请求头，将其转发到后端
+        # 设置forwardedHeaders为insecure，始终信任请求头中的X-Forwarded-*，也就是无论哪个ip过来的请求，我们都信任其携带的X-Forwarded-*请求头，将其转发到后端
         forwardedHeaders: 
           insecure: true
         transport:
@@ -508,4 +508,8 @@ spec:
 
 ```
 
+# 联系我
+- 作者微信：JoeKerouac 
+- 微信公众号（文章会第一时间更新到公众号，如果搜不出来可能是改名字了，加微信即可=_=|）：代码深度研究院
+- GitHub：https://github.com/JoeKerouac
 
