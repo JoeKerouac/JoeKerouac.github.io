@@ -283,4 +283,5 @@ public class SHA1 {
         byte[] digest = sha1.digest(data);
         System.out.println(Arrays.toString(digest));
     }
+}
 ```
