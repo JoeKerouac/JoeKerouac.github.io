@@ -1,8 +1,8 @@
 # idea插件开发之bean复制插件
 ## 背景
-周末在家无事做，顺手开发了一个之前一直想要做的插件，那就是bean复制插件，
+周末在家无事做，顺手开发了一个之前一直想要做的插件，那就是bean复制插件。
 
-在项目中，由于代码分层设计，对于同样一个数据我们通常会定义不同层的`class`，例如`xxxEntity`、`xxxDTO`、`xxxVO`等，这些不同的`class`通常会具有很多相同的字段，在使用时我们需要在进入不同层时将一个类型的对象转换为另外一个类型的对象，此时我们有两种选择：
+在项目中，由于代码分层设计，对于同样一个数据我们通常会定义不同层的`实体`，例如`xxxEntity`、`xxxDTO`、`xxxVO`等，这些不同的`实体`通常会具有很多相同的字段，在使用时我们需要在进入不同层时将一个类型的对象转换为另外一个类型的对象，此时我们有两种选择：
  
 - 1、手动`new`出来一个对象`target`，然后手动编代码调用`get`、`set`方法将`source`中的字段copy到`target`中；
 - 2、使用各种框架的`BeanUtils.copyProperties`方法来将`source`中的字段复制到`target`中；
@@ -68,7 +68,7 @@ plugin/
 ![使用示例.webp](../../resource/idea/使用示例.gif)
 
 
-> 插件已经在idea的插件市场发布，需要的可以在插件市场搜索`BeanCopy`来安装，目前是0.0.1版本，如果需要源码，可以在https://github.com/JoeKerouac/idea-bean-copy-plugin找到；
+> 插件已经在idea的插件市场发布，需要的可以在插件市场搜索`BeanCopy`来安装，目前是0.0.1版本，如果需要源码，可以在https://github.com/JoeKerouac/idea-bean-copy-plugin找到；由于时间有限，这里不详细说明实现了，有需要的可以自行查看源码或者联系作者；
 
 # 联系我
 - 作者微信：JoeKerouac
